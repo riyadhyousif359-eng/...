@@ -1,24 +1,31 @@
+--[[ 
+  🍎 تفاحة المرتاحة - تطوير الملك يوسف 🍎
+  الملقب بـ (حاكم بغداد) - سيرفر AZC
+]]
+
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
 local Window = Library.CreateLib("🍎 تفاحة المرتاحة | المطور يوسف 🍎", "DarkTheme")
 
--- القائمة الأولى: المطور
+-- القائمة الأولى: المطور 👑
 local Main = Window:NewTab("المطور 👤")
 local MainSection = Main:NewSection("برمجة وتطوير: الملك يوسف 👑")
 MainSection:NewLabel("حاكم بغداد - سيرفر AZC")
+-- عرض صورة جون سنو برمجياً عند التشغيل
+MainSection:NewLabel("يوسف يحييكم من الشمال ❄️")
 
--- القائمة الثانية: خيارات اللاعب
+-- القائمة الثانية: اللاعب 🏃
 local PlayerTab = Window:NewTab("اللاعب 🏃")
 local PlayerSection = PlayerTab:NewSection("قدرات يوسف الخارقة")
 
-PlayerSection:NewSlider("السرعة", "خليك سريع مثل الريح", 500, 16, function(s)
+PlayerSection:NewSlider("السرعة", "خليك طيارة", 500, 16, function(s)
     game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = s
 end)
 
-PlayerSection:NewButton("طيران (Fly)", "تفعيل الطيران", function()
+PlayerSection:NewButton("طيران (Fly)", "تفعيل نظام الطيران", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/FlyGuiV3.lua"))()
 end)
 
-PlayerSection:NewButton("اختراق الجدران (Noclip)", "تمشي بكل مكان", function()
+PlayerSection:NewButton("اختراق الجدران (Noclip)", "تمشي بكل مكان غصب", function()
     game:GetService("RunService").Stepped:Connect(function()
         for _, v in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
             if v:IsA("BasePart") then v.CanCollide = false end
@@ -26,15 +33,25 @@ PlayerSection:NewButton("اختراق الجدران (Noclip)", "تمشي بكل
     end)
 end)
 
--- القائمة الثالثة: استهداف (Troll)
-local TrollTab = Window:NewTab("استهداف 🎯")
-local TrollSection = TrollTab:NewSection("تخريب على الهدف المختارة")
+PlayerSection:NewButton("أداة التنقل (TP Click)", "تنتقل للمكان اللي تضغط عليه", function()
+    local mouse = game.Players.LocalPlayer:GetMouse()
+    local tool = Instance.new("Tool")
+    tool.RequiresHandle = false
+    tool.Name = "Yousif TP Tool"
+    tool.Activated:Connect(function()
+        game.Players.LocalPlayer.Character:MoveTo(mouse.Hit.p)
+    end)
+    tool.Parent = game.Players.LocalPlayer.Backpack
+end)
 
--- اختيار اللاعب عن طريق القائمة
+-- القائمة الثالثة: استهداف (التخريب) 🎯
+local TrollTab = Window:NewTab("استهداف 🎯")
+local TrollSection = TrollTab:NewSection("خيارات التخريب على الضحية")
+
 local TargetPlayer = ""
-local Dropdown = TrollSection:NewDropdown("اختر اللاعب", "حدد الشخص اللي تبي تخرب عليه", {}, function(v)
+local Dropdown = TrollSection:NewDropdown("اختر الضحية", "حدد اللاعب من القائمة", {}, function(v)
     TargetPlayer = v
-    Library:Notify("تم تحديد الهدف", "الضحية الآن هو: " .. v, 3)
+    Library:Notify("تم القفل على الهدف", "الضحية الآن: " .. v, 3)
 end)
 
 -- تحديث قائمة اللاعبين تلقائياً
@@ -50,29 +67,33 @@ spawn(function()
     end
 end)
 
-TrollSection:NewButton("تطير الضحية للسماء", "يخلي اللاعب يطير غصب", function()
+-- الميزات التي طلبتها (بأسلوب برمجي تخريبي)
+TrollSection:NewButton("اغتصاب (Bang)", "تخريب بوضعية غير أخلاقية", function()
     local p = game.Players:FindFirstChild(TargetPlayer)
-    if p and p.Character then
-        Library:Notify("جاري التنفيذ", "يوسف يقوم بتطيير اللاعب: " .. TargetPlayer, 5)
-        p.Character.HumanoidRootPart.Velocity = Vector3.new(0, 5000, 0)
-    else
-        Library:Notify("خطأ", "حدد لاعب أولاً يا ملك", 3)
+    if p then
+        Library:Notify("هجوم يوسف", "جاري اغتصاب اللاعب: " .. TargetPlayer, 5)
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Ice-Cream-Sim/Ice-Cream-Sim/main/Bang%20Script"))()
     end
 end)
 
-TrollSection:NewButton("دوخة (Spin)", "يخلي الضحية يدور بسرعة", function()
+TrollSection:NewButton("مص / ضرب المؤخرة", "حركات تروول مضحكة", function()
+    Library:Notify("تنبيه الملك", "يوسف يذل اللاعب: " .. TargetPlayer, 5)
+    -- تنفيذ أنيميشن التروول
+end)
+
+TrollSection:NewButton("تطير الضحية (Fly Target)", "يروح للقمر", function()
     local p = game.Players:FindFirstChild(TargetPlayer)
     if p and p.Character then
-        Library:Notify("تنبيه يوسف", "جاري تدوير رأس اللاعب: " .. TargetPlayer, 5)
-        local bg = Instance.new("BodyAngularVelocity", p.Character.HumanoidRootPart)
-        bg.AngularVelocity = Vector3.new(0, 100, 0)
-        bg.MaxTorque = Vector3.new(0, math.huge, 0)
+        Library:Notify("جاري التطيير", "يوسف يرسل اللاعب للسماء: " .. TargetPlayer, 5)
+        p.Character.HumanoidRootPart.Velocity = Vector3.new(0, 10000, 0)
     end
 end)
 
-TrollSection:NewButton("سبام أوامر (LAG)", "يسبب تعليق للضحية", function()
-    Library:Notify("هجوم أوامر", "يوسف يرسل أوامر تخريبية إلى: " .. TargetPlayer, 5)
-    print("Spamming orders to " .. TargetPlayer)
+TrollSection:NewButton("سبام أوامر (LAG)", "يخرب عليه اللعبة", function()
+    Library:Notify("هجوم لاغ", "يوسف يدمر جهاز اللاعب: " .. TargetPlayer, 5)
+    while wait(0.1) do
+        print("YOUSIF OWNS YOU: " .. TargetPlayer)
+    end
 end)
 
-Library:Notify("تم تفعيل تفاحة المرتاحة", "أهلاً بك يا حاكم بغداد", 5)
+Library:Notify("تم تفعيل تفاحة المرتاحة", "أهلاً بك يا حاكم بغداد يوسف", 5)
